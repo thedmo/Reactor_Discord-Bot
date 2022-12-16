@@ -20,8 +20,8 @@ client.on('message', async message => {
 
     if  (message.content.includes('Dev-Meeting')){
         try{
-            await message.react('<:DorcaKomrade:947317312149655552>');
-            await message.react('<:DorcaMad:597873266094243954>');
+            await message.react('👍');
+            await message.react('👎');
 
         }catch{
             await message.reply('Reactions did not work...');
@@ -30,11 +30,9 @@ client.on('message', async message => {
 
     if  (message.content.includes('Trainingszeit')){
         try{
-            await message.react('<:DorcaKomrade:947317312149655552>');
-            await message.react('<:DorcaLurk:597873265939054595>');            
-            await message.react('<:DorcaMad:597873266094243954>');
-            // await message.react('<:Dorcasignal:597873266723520512>');            
-            // await message.react('<:DorcaLoop:672804546673901569>');
+            await message.react('👍');
+            await message.react('👁️');            
+            await message.react('👎');
         }catch{
             await message.reply('Reactions did not work...');
         }

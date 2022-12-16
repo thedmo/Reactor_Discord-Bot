@@ -10,7 +10,6 @@ services:
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
-      - DISCORD_TOKEN=${TOKEN}
     volumes:
       - ./Reactbot:/home/node/app
     restart: always
