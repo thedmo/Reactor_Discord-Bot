@@ -1,0 +1,19 @@
+version: "2"
+
+networks:
+  discordbotnet:
+    external: false
+services:
+  node:
+    image: "node:13"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${TOKEN}
+    volumes:
+      - ./Reactbot:/home/node/app
+    restart: always
+    networks: 
+      - discordbotnet
+    command: "npm start"
