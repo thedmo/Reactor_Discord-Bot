@@ -13,11 +13,6 @@ client.once('ready', () => {
 client.on('message', async message => {
     console.log(message.content);
 
-    if  (message.content.includes('New Google Calendar event')){
-        message.react('👍');
-        message.react('👎');
-    }
-
     if  (message.content.includes('Trainingszeit')){
         try{
             await message.react('<:DorcaKomrade:947317312149655552>');
@@ -85,24 +80,10 @@ client.on('message', async message => {
             await message.react('🇬');
         }
         catch{
-            console.log('Well, that did not work ^^')
+            console.log('Well, that did not work -_-')
             await message.reply('Reaction does not compute...')
         }
     }
-
-    message.awaitReactions(filter, {max:1, time: 60000, errors: ['time']}).then(
-        collected => {
-            const reaction = collected.first();
-
-            if  (reaction.emoji.name === ''){
-                message.reply('Positive');
-            } else {
-                message.reply('Negative');
-            }
-        }
-    )
-
-    
 });
 
 
