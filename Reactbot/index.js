@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, Message } = require('discord.js');
 const dotenv = require('dotenv').config();
 
 const client = new Client({ 
