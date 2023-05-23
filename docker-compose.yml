@@ -5,7 +5,7 @@ networks:
     external: false
 services:
   node:
-    image: "node:13"
+    image: "node:17"
     user: "node"
     working_dir: /home/node/app
     environment:
@@ -15,4 +15,4 @@ services:
     restart: always
     networks: 
       - discordbotnet
-    command: "npm start"
+    command: bash -c "npm install && npm start"

@@ -1,20 +1,26 @@
-const Discord = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, Message } = require('discord.js');
 const dotenv = require('dotenv').config();
 
-console.log(process.env)
-
-const client = new Discord.Client();
-
-
-client.once('ready', () => {
-	console.log('Ready!');
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions
+    ] 
 });
 
-client.on('message', async message => {
-    console.log(message.content);
+client.once(Events.ClientReady, () => {
+	console.log(`Ready! Logged in`);
+});
 
-    if  (message.content.includes('Trainingszeit')){
+// Reactions
+client.on('messageCreate', async message => {
+    if  ( message.content.includes('Trainingszeit')){
         try{
+            const message = await interaction.reply({ content: 'Trainingszeit Reaktionen: ', fetchReply: true});
             await message.react('<:DorcaKomrade:947317312149655552>');
             await message.react('<:DorcaLurk:597873265939054595>');            
             await message.react('<:DorcaMad:597873266094243954>');
@@ -60,15 +66,6 @@ client.on('message', async message => {
             await message.react('<:DorcaMad:597873266094243954>');
         }catch{
             await message.reply('Reactions did not work...');
-        }
-    }
-
-    if  (message.content === '!Clearchannel'){
-        if(message.author.username === 'Cleara'){
-            message.channel.bulkDelete(100, true).catch(err => {
-                console.error(err);
-                message.channel.send('All Messages are older than two weeks. You have to delete them by yourself ;-)')
-            });
         }
     }
 
