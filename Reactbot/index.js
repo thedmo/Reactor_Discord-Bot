@@ -12,15 +12,9 @@ const client = new Client({
     ] 
 });
 
-const client = new Discord.Client();
-
-
 client.once(Events.ClientReady, () => {
 	console.log(`Ready! Logged in`);
 });
-
-client.on('message', async message => {
-    console.log(message.content);
 
 // Reactions
 client.on('messageCreate', async message => {
@@ -74,15 +68,6 @@ client.on('messageCreate', async message => {
             await message.reply('Reactions did not work...');
         }
     }
-
-    // if  (message.content === '!Clearchannel'){
-    //     if(message.author.username === 'Cleara'){
-    //         message.channel.bulkDelete(100, true).catch(err => {
-    //             console.error(err);
-    //             message.channel.send('All Messages are older than two weeks. You have to delete them by yourself ;-)')
-    //         });
-    //     }
-    // }
 
     if  (message.content === '!ping'){
         try{
