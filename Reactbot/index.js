@@ -20,7 +20,6 @@ client.once(Events.ClientReady, () => {
 client.on('messageCreate', async message => {
     if  ( message.content.includes('Trainingszeit')){
         try{
-            const message = await interaction.reply({ content: 'Trainingszeit Reaktionen: ', fetchReply: true});
             await message.react('<:DorcaKomrade:947317312149655552>');
             await message.react('<:DorcaLurk:597873265939054595>');            
             await message.react('<:DorcaMad:597873266094243954>');
