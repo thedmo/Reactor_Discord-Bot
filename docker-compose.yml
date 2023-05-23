@@ -15,4 +15,4 @@ services:
     restart: always
     networks: 
       - discordbotnet
-    command: "npm start"
+    command: "npm install && npm start"
