@@ -16,72 +16,99 @@ client.once(Events.ClientReady, () => {
 	console.log(`Ready! Logged in`);
 });
 
-// Reactions
+
+// Define Triggers
+class Trigger {
+    constructor(word, reactions){
+        this.word = word;
+        this.reactions = reactions;
+    }
+}
+
+const triggers = [
+    new Trigger('ping', [
+        '🇵',
+        '🇴',
+        '🇳',
+        '🇬'
+    ]),
+    new Trigger('Trainingszeit', [
+        '<:DorcaKomrade:947317312149655552>',
+        '<:DorcaLurk:597873265939054595>',
+        '<:DorcaMad:597873266094243954>'
+    ]),
+    new Trigger('Wingabstimmung', [
+        '1️⃣',
+        '2️⃣',
+        '3️⃣',
+        '4️⃣',
+        '5️⃣',
+        '6️⃣',
+        '7️⃣'
+    ]),
+    new Trigger('Gildenabend', [
+        '<:aurene:857654245801459782>',
+        '<:DorcaLurk:597873265939054595>',
+        '<:DorcaMad:597873266094243954>'
+    ]),
+    new Trigger('Raidtag', [
+        '<:AureneHappy:857654884135075841>',
+        '<:DorcaHeal:597873273212239898>',
+        '<:DorcaLurk:597873265939054595>',
+        '<:DorcaLoop:672804546673901569>',
+        '<:DorcaMad:597873266094243954>'
+    ]),
+]
+
+
+// find string in message
+function SearchForString(message, target) {
+    // console.log('looking for target...');
+    if (message.content.includes(target)) {   
+        return true;
+    }
+    
+    if(message.embeds.length < 1){
+        return false;
+    }
+
+    for (let i = 0; i < message.embeds.length; i++) {
+        if(message.embeds[i].title == null){
+            continue;
+        }
+
+        if(message.embeds[i].title.includes(target)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+
+// Reactions upon string
+async function ReactUpon(message, reactions){
+    for(let i = 0; i < reactions.length; i++){
+        try {
+            await message.react(reactions[i]);
+        } catch (error) {
+            console.log ('unknown Emoji');
+            message.reply('unknown Emoji: ' + reactions[i]);
+        }
+    }
+}
+
+
 client.on('messageCreate', async message => {
-    if  ( message.content.includes('Trainingszeit')){
-        try{
-            await message.react('<:DorcaKomrade:947317312149655552>');
-            await message.react('<:DorcaLurk:597873265939054595>');            
-            await message.react('<:DorcaMad:597873266094243954>');
-        }catch{
-            await message.reply('Reactions did not work...');
-        }
-    }
+for (let i = 0; i < triggers.length; i++) {
+        const trigger = triggers[i];        
+        if  ( !SearchForString(message, trigger.word)){
+            continue;
+        }    
 
-    // Reaktionen auf "Wingabstimmung" mit: 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 
-    if (message.content.includes('Wingabstimmung')){
-        try{
-            await message.react('1️⃣');
-            await message.react('2️⃣');
-            await message.react('3️⃣');
-            await message.react('4️⃣');
-            await message.react('5️⃣');
-            await message.react('6️⃣');
-            await message.react('7️⃣');
-        }catch{
-            await message.reply('reactions did not work...')
-        }
-    }
-
-    // Reaktionen auf "Gildenabend" mit: <:aurene:857654245801459782> <:DorcaLurk:597873265939054595> <:DorcaMad:597873266094243954>
-    if  (message.content.includes('Gildenabend')){
-        try{
-            await message.react('<:aurene:857654245801459782>');
-            await message.react('<:DorcaLurk:597873265939054595>');            
-            await message.react('<:DorcaMad:597873266094243954>');
-        }catch{
-            await message.reply('Reactions did not work...');
-        }
-    }
-
-
-    // Reaktionen auf "Raidtag" mit: <:AureneHappy:857654884135075841> <:DorcaHeal:597873273212239898> <:DorcaLurk:597873265939054595> <:DorcaLoop:672804546673901569> <:DorcaMad:597873266094243954>
-    if  (message.content.includes('Raidtag')){
-        try{
-            await message.react('<:AureneHappy:857654884135075841>');
-            await message.react('<:DorcaHeal:597873273212239898>');            
-            await message.react('<:DorcaLurk:597873265939054595>');            
-            await message.react('<:DorcaLoop:672804546673901569>');            
-            await message.react('<:DorcaMad:597873266094243954>');
-        }catch{
-            await message.reply('Reactions did not work...');
-        }
-    }
-
-    if  (message.content === '!ping'){
-        try{
-            await message.react('🇵');
-            await message.react('🇴');
-            await message.react('🇳');
-            await message.react('🇬');
-        }
-        catch{
-            console.log('Well, that did not work -_-')
-            await message.reply('Reaction does not compute...')
-        }
+        ReactUpon(message, trigger.reactions);
     }
 });
-
 
 
 client.login(process.env.DISCORD_TOKEN);
