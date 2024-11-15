@@ -44,7 +44,8 @@ const triggers = [
         '4️⃣',
         '5️⃣',
         '6️⃣',
-        '7️⃣'
+        '7️⃣',
+	'8️⃣'
     ]),
     new Trigger('Gildenabend', [
         '<:aurene:857654245801459782>',
