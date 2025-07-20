@@ -1,6 +1,5 @@
 .env
 config.json
-package-lock.json
 
 .vscode
 node_modules
