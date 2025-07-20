@@ -1,10 +1,5 @@
-version: "2"
-
-networks:
-  discordbotnet:
-    external: false
 services:
-  node:
+  Reactor-Dev:
     image: "ghcr.io/thedmo/reactor_discord-bot:latest"
     user: "node"
     working_dir: /app
@@ -14,5 +9,3 @@ services:
       - NODE_ENV=production
       - DISCORD_TOKEN=${DISCORD_TOKEN}
     restart: always
-    networks: 
-      - discordbotnet
