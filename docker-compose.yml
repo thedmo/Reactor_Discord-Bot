@@ -5,14 +5,14 @@ networks:
     external: false
 services:
   node:
-    image: "node:17"
+    image: "ghcr.io/thedmo/reactor_discord-bot:latest"
     user: "node"
-    working_dir: /home/node/app
+    working_dir: /app
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
-    volumes:
-      - ./Reactbot:/home/node/app
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
     restart: always
     networks: 
       - discordbotnet
-    command: bash -c "npm install && npm start"

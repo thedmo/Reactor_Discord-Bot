@@ -1,13 +1,13 @@
 Ein kleiner Discord bot, welcher auf das Wort 'Trainingszeit' mit Emojies reagiert.
 Gedacht als Rsvp Bot für ein Heroes of the Storms Team.
 
-Schritte, um den Bot selber zu hosten:
+# Docker
 
-Docker und Docker-Compese muss auf der Maschine installiert sein.
+Um den service mit docker zu hosten:
 
-- in Projektordner (da wo das Docker-compose.yml ist) eine .env Datei anlegen
-- Auf Discord eine neue Anwendung erstellen, den Token kopieren
-- neue .env Datei in Reactbot Ordner anlegen
-- Den kopierten Token in .env Datei nach "DISCORD_TOKEN=" einfügen
+1. Repository clonen
+2. .env in root anlegen
+3. Discord Token in .env einfügen (siehe .env-example file)
+4. container starten via docker compose up
 
-Container starten mit Docker-Compose up
+Via logs kann man sehen, ob der login funktioniert hat oder nicht.
