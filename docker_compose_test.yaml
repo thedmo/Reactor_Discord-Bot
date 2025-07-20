@@ -1,0 +1,21 @@
+version: "2"
+
+networks:
+  discordbotnet:
+    external: false
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tag: "ghcr.io/thedmo/reactor_discord-bot:latest"
+    user: "node"
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+    restart: always
+    networks: 
+      - discordbotnet
