@@ -1,0 +1,16 @@
+services:
+  Reactor-Dev:
+    image: "node:22"
+    user: "node"
+    working_dir: /home/node/app
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - SERVER_ID=${DISCORD_SERVER_ID}
+      - APP_ID=${DISCORD_APP_ID}
+    volumes:
+      - ./Reactbot:/home/node/app
+    restart: always
+    command: ["sh", "-c", "npm install && npm start"]
