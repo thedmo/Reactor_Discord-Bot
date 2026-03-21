@@ -56,6 +56,32 @@ for (const folder of commandFolders) {
 }
 
 client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isButton()) {
+    if (!interaction.customId.startsWith('rsvp:')) return;
+
+    const rsvpCmd = interaction.client.commands.get('rsvp');
+    if (!rsvpCmd || typeof rsvpCmd.handleButton !== 'function') {
+      await interaction.reply({
+        content: 'RSVP handler is not available.',
+        flags: MessageFlags.Ephemeral,
+      });
+      return;
+    }
+
+    try {
+      await rsvpCmd.handleButton(interaction);
+    } catch (error) {
+      console.error(error);
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({
+          content: 'There was an error while processing your RSVP.',
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+    }
+    return;
+  }
+
   if (!interaction.isChatInputCommand()) return;
 
   console.log(interaction);
@@ -67,6 +93,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       content: "command was not found",
       flags: MessageFlags.Ephemeral,
     });
+    return;
   }
 
   try {
