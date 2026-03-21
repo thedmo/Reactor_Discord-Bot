@@ -1,7 +1,7 @@
 {
   "name": "reactbot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "a small rsvp bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,8 @@
     "start": "node index.js",
     "start-env": "node --env-file=../.env index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Benjamin Hauser",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^14.23.2",
     "dotenv": "^16.0.3"
