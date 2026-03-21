@@ -1,89 +1,91 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
+const fs = require("node:fs");
+const path = require("node:path");
+const {
+  Client,
+  Collection,
+  Events,
+  GatewayIntentBits,
+  MessageFlags,
+} = require("discord.js");
+require("dotenv").config();
 
 const token = process.env.DISCORD_TOKEN;
 
+if (!token) {
+  throw new Error(
+    "Missing DISCORD_TOKEN. Add it to your environment or a .env file.",
+  );
+}
+
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.DirectMessageReactions
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.DirectMessageReactions,
+  ],
 });
 
 client.once(Events.ClientReady, (readyClient) => {
-    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 client.commands = new Collection();
 
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, "commands");
 const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
-    for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
-        // Set a new item in the Collection with the key as the command name and the value as the exported module
-        if ('data' in command && 'execute' in command) {
-            client.commands.set(command.data.name, command);
-        } else {
-            console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-        }
+  const commandsPath = path.join(foldersPath, folder);
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+    // Set a new item in the Collection with the key as the command name and the value as the exported module
+    if ("data" in command && "execute" in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      console.log(
+        `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+      );
     }
+  }
 }
 
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand())
-        return;
+  if (!interaction.isChatInputCommand()) return;
 
-    console.log(interaction);
+  console.log(interaction);
 
-    const cmd = interaction.client.commands.get(interaction.commandName);
+  const cmd = interaction.client.commands.get(interaction.commandName);
 
-    if (!cmd) {
-        await interaction.reply({
-            content: 'command was not found',
-            flags: MessageFlags.Ephemeral,
-        });
+  if (!cmd) {
+    await interaction.reply({
+      content: "command was not found",
+      flags: MessageFlags.Ephemeral,
+    });
+  }
+
+  try {
+    await cmd.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: "There was an error while executing this command!",
+        flags: MessageFlags.Ephemeral,
+      });
+    } else {
+      await interaction.reply({
+        content: "There was an error while executing this command!",
+        flags: MessageFlags.Ephemeral,
+      });
     }
-
-    try {
-        await cmd.execute(interaction);
-    }
-
-    catch (error) {
-        console.error(error);
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({
-                content: 'There was an error while executing this command!',
-                flags: MessageFlags.Ephemeral,
-            });
-        }
-
-        else {
-            await interaction.reply({
-                content: 'There was an error while executing this command!',
-                flags: MessageFlags.Ephemeral,
-            });
-        }
-    }
+  }
 });
-
-
-
-
-
-
-
-
-
-
 
 // // Define Triggers
 // class Trigger {
@@ -129,7 +131,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 //     ]),
 // ]
 
-
 // // find string in message
 // function SearchForString(message, target) {
 //     // console.log('looking for target...');
@@ -154,7 +155,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 //     return false;
 // }
 
-
 // // Reactions upon string
 // async function ReactUpon(message, reactions) {
 //     for (let i = 0; i < reactions.length; i++) {
@@ -167,7 +167,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 //     }
 // }
 
-
 // client.on('messageCreate', async message => {
 //     for (let i = 0; i < triggers.length; i++) {
 //         const trigger = triggers[i];
@@ -178,6 +177,5 @@ client.on(Events.InteractionCreate, async (interaction) => {
 //         ReactUpon(message, trigger.reactions);
 //     }
 // });
-
 
 client.login(token);
