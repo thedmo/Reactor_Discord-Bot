@@ -1,18 +1,21 @@
-const { Client, Collection, Events, GatewayIntentBits, Message } = require('discord.js');
+const Discord = require('discord.js');
+const { Client } = Discord;
 const dotenv = require('dotenv').config();
 
-const client = new Client({ 
-    intents: [
-        GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessages, 
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.DirectMessageReactions
-    ] 
+const intents = [
+    Discord.GatewayIntentBits?.Guilds ?? Discord.Intents?.FLAGS?.GUILDS,
+    Discord.GatewayIntentBits?.GuildMessages ?? Discord.Intents?.FLAGS?.GUILD_MESSAGES,
+    Discord.GatewayIntentBits?.GuildMessageReactions ?? Discord.Intents?.FLAGS?.GUILD_MESSAGE_REACTIONS,
+    Discord.GatewayIntentBits?.MessageContent ?? Discord.Intents?.FLAGS?.MESSAGE_CONTENT,
+    Discord.GatewayIntentBits?.DirectMessages ?? Discord.Intents?.FLAGS?.DIRECT_MESSAGES,
+    Discord.GatewayIntentBits?.DirectMessageReactions ?? Discord.Intents?.FLAGS?.DIRECT_MESSAGE_REACTIONS
+].filter(Boolean);
+
+const client = new Client({
+    intents
 });
 
-client.once(Events.ClientReady, () => {
+client.once(Discord.Events?.ClientReady ?? 'ready', () => {
 	console.log(`Ready! Logged in`);
 });
 
