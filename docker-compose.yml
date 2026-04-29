@@ -5,11 +5,6 @@ services:
     working_dir: /app
     env_file:
       - .env
-    environment:
-      - NODE_ENV=production
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-      # - DISCORD_SERVER_ID=${DISCORD_SERVER_ID}
-      # - DISCORD_APP_ID=${DISCORD_APP_ID}
     volumes:
       - ./Reactbot:/app
     restart: always
